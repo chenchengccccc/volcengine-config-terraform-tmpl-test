@@ -41,8 +41,8 @@ tofu validate
 tofu state list
 ```
 
-IAM 是全局服务，Provider 初始化需要的地域由 `.credentials.env` 中的
-`VOLCENGINE_REGION` 提供，不属于模板业务参数。
+IAM 是全局服务，模板不接收地域参数；`provider.tf` 中的 `cn-beijing` 只用于选择
+Provider 请求端点。
 
 不要运行 `tofu import`。
 

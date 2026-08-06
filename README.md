@@ -15,7 +15,6 @@
         │   │   └── split-iam-user-group/
         │   └── opentofu/                # OpenTofu 1.11.8
         │       ├── eni-add-security-group/
-        │       ├── eni-add-security-group-cn-shanghai/ # Provider 固定上海地域
         │       ├── vpc-flow-log-to-tls/
         │       ├── delete-unassociated-network-acl/
         │       └── split-iam-user-group/
@@ -77,10 +76,6 @@ OpenTofu 版本用于对比配置式 Import。进入对应场景：
 ENI 和 IAM 场景不再执行独立的 `tofu import`；Import 会进入正常 Plan/Apply。Network ACL
 删除仍然需要一次 Import Apply 和一次 Destroy Apply。详细对比见
 `templates/volcengine/opentofu/README.md`。
-
-托管平台不能动态设置 Region 时，可改用
-`templates/volcengine/opentofu/eni-add-security-group-cn-shanghai/`。该模板在
-`provider.tf` 中固定 `cn-shanghai`，只需传入 `TF_VAR_network_interface_id`。
 
 ## AWS CloudFormation
 
