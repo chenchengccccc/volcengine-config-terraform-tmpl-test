@@ -61,26 +61,4 @@ tofu plan
 
 最后一次 Plan 应为 `No changes.`。Import Block 可以保留，后续不会重复 Import。
 
-## 清理实验
-
-先从 ENI 的完整安全组集合中移除实验安全组：
-
-```bash
-export TF_VAR_attach_new_security_group=false
-tofu plan -out=plans/detach.tfplan
-tofu show -no-color plans/detach.tfplan
-tofu apply plans/detach.tfplan
-```
-
-再解除 OpenTofu 对原 ENI 的管理，并删除实验安全组：
-
-```bash
-tofu state rm volcenginecc_vpc_eni.target
-tofu plan -destroy -out=plans/destroy.tfplan
-tofu show -no-color plans/destroy.tfplan
-tofu apply plans/destroy.tfplan
-tofu state list
-```
-
-Destroy 模式不会重新执行 Import Block。清理完成后不要执行普通 Plan，否则模板会重新
-Import ENI 并准备创建实验安全组。
+本模板只执行修正：创建安全组并关联 ENI，不包含解除关联或删除资源的清理流程。

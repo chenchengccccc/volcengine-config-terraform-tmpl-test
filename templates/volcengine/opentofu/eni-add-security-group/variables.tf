@@ -10,12 +10,3 @@ variable "network_interface_id" {
   description = "需要追加安全组的现有辅助网卡 ID。"
   type        = string
 }
-
-# true：保留原安全组并追加实验安全组。
-# false：从 ENI 的当前安全组集合中移除实验安全组，用于实验清理的第一阶段。
-# 该变量不会控制安全组资源是否创建或删除。
-variable "attach_new_security_group" {
-  description = "true 表示关联实验安全组；false 表示解除关联，用于清理实验。"
-  type        = bool
-  default     = true
-}

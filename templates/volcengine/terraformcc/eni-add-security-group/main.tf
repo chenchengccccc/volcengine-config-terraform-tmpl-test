@@ -30,18 +30,9 @@ locals {
   ])
 
   # 计算 ENI 最终应该关联的完整安全组集合：
-  #
-  # attach_new_security_group = true
-  #   当前安全组 ∪ 新安全组：保留所有原安全组，并追加新安全组。
-  #
-  # attach_new_security_group = false
-  #   当前安全组 - 新安全组：只解除实验安全组，保留其他安全组。
-  #
+  # 当前安全组 ∪ 新安全组，保留所有原安全组并追加新安全组。
   # 这里传递的是完整终态集合，而不是单独执行“增加一个 ID”的动作。
-  desired_security_group_ids = var.attach_new_security_group ? setunion(
-    data.volcenginecc_vpc_eni.target.security_group_ids,
-    local.remediation_security_group_ids,
-    ) : setsubtract(
+  desired_security_group_ids = setunion(
     data.volcenginecc_vpc_eni.target.security_group_ids,
     local.remediation_security_group_ids,
   )
@@ -74,7 +65,7 @@ resource "volcenginecc_vpc_eni" "target" {
     # 当前实验按默认上限 5 个安全组进行保护。
     # 已达到上限时停止，不进入创建和关联阶段。
     precondition {
-      condition     = !var.attach_new_security_group || length(data.volcenginecc_vpc_eni.target.security_group_ids) < 5
+      condition     = length(local.desired_security_group_ids) <= 5
       error_message = "目标 ENI 已关联 5 个安全组，停止实验。"
     }
   }

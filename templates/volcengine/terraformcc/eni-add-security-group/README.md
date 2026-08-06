@@ -128,36 +128,4 @@ terraform plan
 
 预期结果为 `No changes.`。
 
-## 清理
-
-第一步，解除实验安全组与 ENI 的关联：
-
-```bash
-export TF_VAR_attach_new_security_group=false
-
-terraform plan \
-  -out=plans/detach.tfplan
-terraform show -no-color plans/detach.tfplan
-terraform apply plans/detach.tfplan
-```
-
-第二步，只解除 Terraform 对原有 ENI 的管理，不删除云上 ENI：
-
-```bash
-terraform state rm volcenginecc_vpc_eni.target
-```
-
-第三步，删除 Terraform 创建的实验安全组：
-
-```bash
-terraform destroy
-```
-
-最后：
-
-```bash
-terraform state list
-```
-
-结果应为空。执行 `state rm` 后不要再执行普通 plan，否则 Terraform 会把缺失的
-ENI 当作待创建资源。
+本模板只执行修正：创建安全组并关联 ENI，不包含解除关联或删除资源的清理流程。
