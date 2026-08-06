@@ -28,6 +28,7 @@ Terraform 和 OpenTofu 是同一层的两个 IaC 核心引擎。OpenTofu 不是 
 | ------------------- | ----------------------- | ------------------------------------------------ |
 | ENI 追加安全组           | CLI Import，再 Plan/Apply | Import、Create、Modify 在同一个 Plan/Apply             |
 | 拆分 IAM 用户组          | CLI Import，再 Plan/Apply | Import、Create replacement、Delete 在同一个 Plan/Apply |
+| AccessKey 迁移到 IAM Role | 未提供此实验模板            | 同一资源栈执行两次 Apply：Import + Create，再 Delete       |
 | 删除未关联 Network ACL   | CLI Import，再 Destroy    | Import Plan/Apply，再 Destroy Plan/Apply           |
 | VPC Flow Log 投递 TLS | 一次 Plan/Apply           | 一次 Plan/Apply，无变化                                |
 
