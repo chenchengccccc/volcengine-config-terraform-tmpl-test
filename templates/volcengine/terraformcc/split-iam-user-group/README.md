@@ -52,23 +52,22 @@ IAM 是免费服务，本模板不会创建收费资源，也不会创建、更�
 
 ## 指定旧用户组
 
-加载凭证后，设置地域和旧用户组名：
+加载执行环境后，只需设置旧用户组名：
 
 ```bash
 source ../../../../.credentials.env
-export TF_VAR_region="cn-beijing"
 export TF_VAR_old_group_name="qa-legacy-developers"
 ```
 
 Terraform 会把 `TF_VAR_old_group_name` 作为 `old_group_name` 变量，同时 Import 命令也
-直接复用这个值，不需要在两个文件或命令中重复填写。
+直接复用这个值，不需要在两个文件或命令中重复填写。IAM 是全局服务，Provider 初始化
+需要的地域由 `.credentials.env` 中的 `VOLCENGINE_REGION` 提供，不属于模板业务参数。
 
 ## 初始化和 Plan
 
 ```bash
 cd templates/volcengine/terraformcc/split-iam-user-group
 source ../../../../.credentials.env
-export TF_VAR_region="cn-beijing"
 export TF_VAR_old_group_name="qa-legacy-developers"
 
 terraform init

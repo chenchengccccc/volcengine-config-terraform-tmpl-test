@@ -34,13 +34,15 @@ replacement。`create_before_destroy` 保证先建新组，再删旧组。
 cd templates/volcengine/opentofu/split-iam-user-group
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_old_group_name="qa-legacy-developers"
 
 tofu init
 tofu validate
 tofu state list
 ```
+
+IAM 是全局服务，Provider 初始化需要的地域由 `.credentials.env` 中的
+`VOLCENGINE_REGION` 提供，不属于模板业务参数。
 
 不要运行 `tofu import`。
 

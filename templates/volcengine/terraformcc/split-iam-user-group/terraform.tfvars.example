@@ -1,2 +1,2 @@
-# 本模板通过 TF_VAR_* 环境变量注入参数，不从 terraform.tfvars 读取业务输入。
-# 完整的 export 示例见 README.md。
+# old_group_name 通过 TF_VAR_old_group_name 注入，不从 terraform.tfvars 读取。
+# Provider Region 通过 VOLCENGINE_REGION 注入，完整示例见 README.md。
