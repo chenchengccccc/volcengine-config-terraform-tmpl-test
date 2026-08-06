@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy CloudWatch Logs resources and a Flow Log for an existing VPC.
+
+Parameters:
+  ExistingVpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: ID of the existing VPC. The VPC itself is not imported or modified.
+  NamePrefix:
+    Type: String
+    Default: qa-cfn-vpc-flow-log
+    AllowedPattern: '^[A-Za-z0-9._-]+$'
+    Description: Prefix used for the new resources.
+
+Resources:
+  FlowLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/vpc-flow-logs/${NamePrefix}'
+      RetentionInDays: 1
+      Tags:
+        - Key: TestCase
+          Value: vpc-flow-log-to-cloudwatch
+
+  FlowLogsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+              ArnLike:
+                aws:SourceArn: !Sub 'arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:vpc-flow-log/*'
+      Policies:
+        - PolicyName: PublishVpcFlowLogs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${FlowLogGroup}:*'
+              - Effect: Allow
+                Action:
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                Resource: '*'
+      Tags:
+        - Key: TestCase
+          Value: vpc-flow-log-to-cloudwatch
+
+  VpcFlowLog:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      DeliverLogsPermissionArn: !GetAtt FlowLogsRole.Arn
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref FlowLogGroup
+      MaxAggregationInterval: 600
+      ResourceId: !Ref ExistingVpcId
+      ResourceType: VPC
+      TrafficType: ALL
+      Tags:
+        - Key: Name
+          Value: !Sub '${NamePrefix}-all'
+        - Key: TestCase
+          Value: vpc-flow-log-to-cloudwatch
+
+Outputs:
+  ExistingVpcId:
+    Value: !Ref ExistingVpcId
+  FlowLogId:
+    Value: !Ref VpcFlowLog
+  LogGroupName:
+    Value: !Ref FlowLogGroup
+  FlowLogsRoleArn:
+    Value: !GetAtt FlowLogsRole.Arn

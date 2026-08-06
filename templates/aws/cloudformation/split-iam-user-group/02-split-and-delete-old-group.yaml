@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::LanguageExtensions
+Description: Create two one-policy groups, move imported users, and delete the old group.
+
+Parameters:
+  LegacyGroupPath:
+    Type: String
+    Default: /
+  PolicyAArn:
+    Type: String
+  PolicyBArn:
+    Type: String
+  GroupAName:
+    Type: String
+  GroupBName:
+    Type: String
+  ExistingUserNames:
+    Type: CommaDelimitedList
+
+Resources:
+  PolicyAGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref GroupAName
+      Path: !Ref LegacyGroupPath
+      ManagedPolicyArns:
+        - !Ref PolicyAArn
+
+  PolicyBGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref GroupBName
+      Path: !Ref LegacyGroupPath
+      ManagedPolicyArns:
+        - !Ref PolicyBArn
+
+  'Fn::ForEach::ExistingUsers':
+    - ExistingUserName
+    - !Ref ExistingUserNames
+    - 'ExistingUser${ExistingUserName}':
+        Type: AWS::IAM::User
+        DeletionPolicy: Retain
+        UpdateReplacePolicy: Retain
+        Properties:
+          UserName: !Ref ExistingUserName
+          Groups:
+            - !Ref PolicyAGroup
+            - !Ref PolicyBGroup
+
+Outputs:
+  PolicyAGroupName:
+    Value: !Ref PolicyAGroup
+  PolicyBGroupName:
+    Value: !Ref PolicyBGroup

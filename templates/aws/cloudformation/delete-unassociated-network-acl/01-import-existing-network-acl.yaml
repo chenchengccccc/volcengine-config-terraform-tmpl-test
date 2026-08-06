@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Import one existing unassociated network ACL so deleting the stack deletes the ACL.
+
+Parameters:
+  ExistingVpcId:
+    Type: AWS::EC2::VPC::Id
+
+Resources:
+  TargetNetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      VpcId: !Ref ExistingVpcId

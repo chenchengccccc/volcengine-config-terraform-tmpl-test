@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a security group and append it to an imported existing ENI.
+
+Parameters:
+  ExistingSubnetId:
+    Type: AWS::EC2::Subnet::Id
+  ExistingSecurityGroupIds:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+  ExistingVpcId:
+    Type: AWS::EC2::VPC::Id
+  NamePrefix:
+    Type: String
+    Default: qa-cfn-eni-sg
+
+Resources:
+  AddedSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group added to an existing ENI by CloudFormation
+      VpcId: !Ref ExistingVpcId
+      Tags:
+        - Key: Name
+          Value: !Sub '${NamePrefix}-added'
+        - Key: TestCase
+          Value: eni-add-security-group
+
+  TargetNetworkInterface:
+    Type: AWS::EC2::NetworkInterface
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      SubnetId: !Ref ExistingSubnetId
+      GroupSet:
+        Fn::Split:
+          - ','
+          - Fn::Join:
+              - ','
+              - - Fn::Join:
+                    - ','
+                    - !Ref ExistingSecurityGroupIds
+                - !Ref AddedSecurityGroup
+
+Outputs:
+  ExistingNetworkInterfaceId:
+    Value: !Ref TargetNetworkInterface
+  AddedSecurityGroupId:
+    Value: !Ref AddedSecurityGroup

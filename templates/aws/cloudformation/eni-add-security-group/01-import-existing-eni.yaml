@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Import an existing ENI without changing its current security groups.
+
+Parameters:
+  ExistingSubnetId:
+    Type: AWS::EC2::Subnet::Id
+  ExistingSecurityGroupIds:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+
+Resources:
+  TargetNetworkInterface:
+    Type: AWS::EC2::NetworkInterface
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      SubnetId: !Ref ExistingSubnetId
+      GroupSet: !Ref ExistingSecurityGroupIds

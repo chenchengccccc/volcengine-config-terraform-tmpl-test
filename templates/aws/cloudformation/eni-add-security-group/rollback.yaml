@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Restore the imported ENI security groups when rolling back the QA experiment.
+
+Parameters:
+  ExistingSubnetId:
+    Type: AWS::EC2::Subnet::Id
+  ExistingSecurityGroupIds:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+
+Resources:
+  TargetNetworkInterface:
+    Type: AWS::EC2::NetworkInterface
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      SubnetId: !Ref ExistingSubnetId
+      GroupSet: !Ref ExistingSecurityGroupIds

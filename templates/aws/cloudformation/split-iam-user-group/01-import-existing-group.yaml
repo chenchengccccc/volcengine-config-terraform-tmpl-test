@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::LanguageExtensions
+Description: Import an existing IAM group and all of its existing users.
+
+Parameters:
+  LegacyGroupName:
+    Type: String
+  LegacyGroupPath:
+    Type: String
+    Default: /
+  PolicyAArn:
+    Type: String
+  PolicyBArn:
+    Type: String
+  ExistingUserNames:
+    Type: CommaDelimitedList
+
+Resources:
+  LegacyGroup:
+    Type: AWS::IAM::Group
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      GroupName: !Ref LegacyGroupName
+      Path: !Ref LegacyGroupPath
+      ManagedPolicyArns:
+        - !Ref PolicyAArn
+        - !Ref PolicyBArn
+
+  'Fn::ForEach::ExistingUsers':
+    - ExistingUserName
+    - !Ref ExistingUserNames
+    - 'ExistingUser${ExistingUserName}':
+        Type: AWS::IAM::User
+        DeletionPolicy: Retain
+        UpdateReplacePolicy: Retain
+        Properties:
+          UserName: !Ref ExistingUserName
+          Groups:
+            - !Ref LegacyGroup
