@@ -62,3 +62,6 @@ tofu validate
 ```
 
 业务参数仍然使用 `TF_VAR_*` 环境变量。具体 Plan 预期和清理步骤见各案例 README。
+
+`eni-add-security-group-cn-shanghai/` 是托管平台验证模板：Provider Region 在文件中固定为
+`cn-shanghai`，平台只需注入 ENI ID。

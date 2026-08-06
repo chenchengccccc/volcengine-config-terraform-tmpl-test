@@ -1,0 +1,2 @@
+# 唯一业务输入通过 TF_VAR_network_interface_id 注入，不从 terraform.tfvars 读取。
+# 完整的 export 示例见 README.md。
