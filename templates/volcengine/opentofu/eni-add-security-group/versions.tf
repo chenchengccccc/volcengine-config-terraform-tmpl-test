@@ -2,10 +2,7 @@ terraform {
   # 本目录使用 OpenTofu 1.11.8 的配置式 Import for_each 语法。
   required_version = "= 1.11.8"
 
-  # 每个案例使用独立 State，不能与 Terraform 1.5.7 案例共用。
-  backend "local" {
-    path = "state/terraform.tfstate"
-  }
+  # Backend 由执行环境决定：本地默认使用 local，托管平台可注入自己的 Backend。
 
   required_providers {
     volcenginecc = {

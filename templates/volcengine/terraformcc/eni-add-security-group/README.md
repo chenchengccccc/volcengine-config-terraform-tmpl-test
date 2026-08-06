@@ -58,11 +58,13 @@ terraform init
 terraform validate
 ```
 
-本地 Backend 将资源状态保存在：
+模板不声明 Backend。本地执行时 Terraform 默认将资源状态保存在：
 
 ```text
-state/terraform.tfstate
+terraform.tfstate
 ```
+
+托管平台执行时，由平台注入 Backend 并持久化 State。
 
 ## 首次 Import
 
@@ -72,7 +74,7 @@ state/terraform.tfstate
 terraform state list
 ```
 
-首次初始化后，因为 `state/terraform.tfstate` 尚未生成，此命令会提示
+首次初始化后，因为 `terraform.tfstate` 尚未生成，此命令会提示
 `No state file was found`。这是预期的初始状态；import 成功后 state 文件才会创建。
 
 然后把现有 ENI 绑定到 managed resource：

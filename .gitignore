@@ -2,8 +2,6 @@
 .DS_Store
 templates/**/.terraform/
 templates/**/terraform.tfvars
-templates/**/state/*
-!templates/**/state/.gitkeep
 templates/**/plans/*
 !templates/**/plans/.gitkeep
 *.tfplan

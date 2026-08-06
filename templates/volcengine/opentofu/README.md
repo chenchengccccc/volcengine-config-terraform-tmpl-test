@@ -49,7 +49,7 @@ Import Block 是幂等声明：资源地址已经存在于 State 时，后续 Pl
 ## 使用要求
 
 - 固定使用 OpenTofu 1.11.8，不要用 Terraform 1.5.7 执行本目录。
-- 每个案例使用自己的 `state/terraform.tfstate`，不能与 `../terraformcc/` 共用 State。
+- 模板不声明 Backend；本地执行默认在案例目录保存 `terraform.tfstate`，托管执行由平台注入 Backend。
 - 第一次 `tofu init` 会生成 OpenTofu 版本的 `.terraform.lock.hcl`。
 - Provider、资源 Schema 和云 API 行为没有变化；简化来自 OpenTofu 的配置式 Import。
 
