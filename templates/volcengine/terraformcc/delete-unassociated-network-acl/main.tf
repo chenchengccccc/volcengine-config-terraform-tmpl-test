@@ -17,9 +17,10 @@ resource "volcenginecc_vpc_network_acl" "target" {
 
   lifecycle {
     # 只有关联资源集合为空时，才允许 Terraform 为该 ACL 生成操作计划。
+    # Provider 会把“没有关联资源”读取为 null，因此需要先归一为空集合。
     # 如果 ACL 仍关联任意子网，Plan 会直接失败，不会进入 Destroy。
     precondition {
-      condition     = length(data.volcenginecc_vpc_network_acl.target.resources) == 0
+      condition     = length(coalesce(data.volcenginecc_vpc_network_acl.target.resources, toset([]))) == 0
       error_message = "Network ACL 仍关联子网，禁止删除。"
     }
 
