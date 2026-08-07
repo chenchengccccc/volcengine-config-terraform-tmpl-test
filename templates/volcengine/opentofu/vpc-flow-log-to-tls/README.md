@@ -26,7 +26,6 @@ source ../../../../.credentials.env
 
 export TF_VAR_region="cn-beijing"
 export TF_VAR_vpc_id="vpc-xxxxxxxxxxxxxxxxxxxxxxxxx"
-export TF_VAR_project_name="default"
 
 tofu init
 tofu validate
@@ -56,7 +55,8 @@ volcenginecc_tls_topic.flow_log
 volcenginecc_vpc_flow_log.target
 ```
 
-现有 VPC 不应出现在 Create、Update 或 Delete 中。
+模板会通过 Data Source 读取现有 VPC 的 `project_name`。现有 VPC 不应出现在 Create、
+Update 或 Delete 中，也不需要 Import。
 
 ```bash
 tofu apply plans/apply.tfplan

@@ -36,7 +36,7 @@ Plan: 3 to add, 0 to change, 0 to destroy.
 ## 初始化和 Plan
 
 Terraform 会自动把 `TF_VAR_<变量名>` 映射到同名输入变量。进入模板后先设置本次
-实验的三个必填参数：
+实验的两个必填参数：
 
 ```bash
 cd templates/volcengine/terraformcc/vpc-flow-log-to-tls
@@ -44,7 +44,6 @@ source ../../../../.credentials.env
 
 export TF_VAR_region="cn-beijing"
 export TF_VAR_vpc_id="vpc-xxxxxxxxxxxxxxxxxxxxxxxxx"
-export TF_VAR_project_name="default"
 
 terraform init
 terraform validate
@@ -64,7 +63,8 @@ export TF_VAR_log_ttl=30
 环境变量只作用于当前 Shell；打开新终端后需要重新 `source` 凭证并执行上述 `export`。
 
 首次执行时，`terraform state list` 提示 `No state file was found` 是正常现象。该模板
-不需要执行 `terraform import`，目标 VPC 也不会进入 Terraform state。
+不需要执行 `terraform import`。模板只通过 Data Source 读取目标 VPC 的 `project_name`，
+不会把 VPC 作为 managed resource 纳入 State。
 
 确认 Plan 只包含以下三个 Create：
 
@@ -74,8 +74,8 @@ volcenginecc_tls_topic.flow_log
 volcenginecc_vpc_flow_log.target
 ```
 
-不应出现 `volcenginecc_vpc_vpc` 的 Create、Update 或 Delete；目标 VPC ID 只作为
-`volcenginecc_vpc_flow_log.target.resource_id` 的输入。
+不应出现 `volcenginecc_vpc_vpc` 的 Create、Update 或 Delete；Data Source 只读取 VPC，
+VPC ID 同时作为 `volcenginecc_vpc_flow_log.target.resource_id` 的输入。
 
 ## Apply
 

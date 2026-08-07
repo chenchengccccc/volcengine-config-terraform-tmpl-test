@@ -5,7 +5,7 @@ variable "region" {
 }
 
 # 这是一个已经存在的 VPC。
-# 本模板只把该 ID 传给新建的 FlowLog，不会 Import、Update 或 Delete 该 VPC。
+# 本模板通过该 ID 只读 VPC，并把它传给新建的 FlowLog；不会 Import、Update 或 Delete VPC。
 variable "vpc_id" {
   description = "需要启用流日志的现有 VPC ID。"
   type        = string
@@ -14,14 +14,6 @@ variable "vpc_id" {
     condition     = startswith(var.vpc_id, "vpc-")
     error_message = "vpc_id 必须是以 vpc- 开头的 VPC ID。"
   }
-}
-
-# 新建的 TLS Project 和 FlowLog 沿用现有 VPC 所属的 IAM Project。
-# TerraformCC 的存量 VPC 单资源 data source 对部分资源无法稳定查询，因此把这个
-# 已知属性作为显式输入，避免给 DEPLOY 流程增加不必要的读取依赖。
-variable "project_name" {
-  description = "现有 VPC 所属的 IAM Project。"
-  type        = string
 }
 
 # All：采集全部流量；Allow：只采集放通流量；Drop：只采集拒绝流量。

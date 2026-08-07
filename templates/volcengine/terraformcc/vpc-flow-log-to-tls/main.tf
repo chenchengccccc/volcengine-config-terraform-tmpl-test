@@ -1,3 +1,8 @@
+# 只读现有 VPC 的所属项目，不 Import，也不取得该 VPC 的管理权。
+data "volcenginecc_vpc_vpc" "target" {
+  id = var.vpc_id
+}
+
 locals {
   # 使用 VPC ID 生成稳定且符合资源命名规则的后缀。
   # 同一个 VPC 重复运行会得到相同名称，便于 QA 定位和清理资源。
@@ -6,13 +11,16 @@ locals {
   log_project_name = "config-vpc-flow-${local.name_suffix}"
   log_topic_name   = "config-vpc-flow-topic-${local.name_suffix}"
   flow_log_name    = "config-vpc-flow-${local.name_suffix}"
+
+  # TLS Project 和 FlowLog 与目标 VPC 使用同一个 IAM Project。
+  project_name = data.volcenginecc_vpc_vpc.target.project_name
 }
 
 # 第一步：为目标 VPC 创建独立的 TLS 日志项目。
 # IAM Project 沿用现有 VPC，避免把新建资源放入错误的项目。
 resource "volcenginecc_tls_project" "flow_log" {
   project_name     = local.log_project_name
-  iam_project_name = var.project_name
+  iam_project_name = local.project_name
   description      = "Created for VPC flow logs by TerraformCC remediation lab"
 }
 
@@ -39,11 +47,11 @@ resource "volcenginecc_tls_topic" "flow_log" {
 #   log_topic_name   -> 新建 TLS Topic
 #
 # 原 VPC 不需要 Import，也不会被 Update。Project、Topic 和 FlowLog 之间的资源
-# 引用负责建立创建顺序；vpc_id 只作为新建 FlowLog 的关联目标输入。
+# 引用负责建立创建顺序；VPC Data Source 只读取所属 IAM Project。
 resource "volcenginecc_vpc_flow_log" "target" {
   flow_log_name        = local.flow_log_name
   description          = "Collects traffic from ${var.vpc_id}"
-  project_name         = var.project_name
+  project_name         = local.project_name
   resource_type        = "vpc"
   resource_id          = var.vpc_id
   traffic_type         = var.traffic_type

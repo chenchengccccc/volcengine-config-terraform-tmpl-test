@@ -3,7 +3,7 @@ output "target_vpc" {
   description = "流日志采集的现有 VPC。"
   value = {
     id           = var.vpc_id
-    project_name = var.project_name
+    project_name = local.project_name
   }
 }
 
