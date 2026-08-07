@@ -10,6 +10,6 @@ output "migration_summary" {
       name = volcenginecc_iam_role.replacement.role_name
       trn  = volcenginecc_iam_role.replacement.trn
     }
-    access_key_action = var.delete_legacy_access_keys ? "all_deleted" : "all_imported_and_retained"
+    access_key_action = var.delete_legacy_access_keys ? "all_deleted" : "all_imported_and_disabled"
   }
 }

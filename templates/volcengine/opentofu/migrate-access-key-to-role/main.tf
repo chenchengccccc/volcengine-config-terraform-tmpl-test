@@ -42,12 +42,13 @@ resource "terraform_data" "migration_context" {
   }
 }
 
-# 第一次 Apply：for_each 为用户的全部 AccessKey，imports.tf 会逐个 Import。
+# 第一次 Apply：for_each 为用户的全部 AccessKey，imports.tf 会逐个 Import 并禁用。
 # 第二次 Apply：for_each 变为空，State 中的全部 AccessKey 实例都会被计划删除。
 resource "volcenginecc_iam_accesskey" "legacy" {
   for_each = var.delete_legacy_access_keys ? {} : local.source_access_keys
 
   user_name = var.user_name
+  status    = "inactive"
 }
 
 # 创建替代长期 AccessKey 的 IAM Role，并复制测试用户的直接授权策略。

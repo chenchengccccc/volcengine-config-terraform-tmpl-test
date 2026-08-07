@@ -5,13 +5,11 @@
 使用一个资源栈、两个 Apply 验证跨资源类型的分阶段迁移：
 
 ```text
-第一次 Apply：Import 测试用户的全部 AccessKey + Create IAM Role
+第一次 Apply：Import 并禁用测试用户的全部 AccessKey + Create IAM Role
 
 测试 IAM 用户 ──直接授权策略──┐
                              ├──复制──> 新 IAM Role（保留）
-全部 AccessKey ──Import───────┘
-       │
-       └──保持原状态，留出业务切换和验证窗口
+全部 AccessKey ──Import + Update(status=inactive)
 
 第二次 Apply：Delete 测试用户的全部 AccessKey
 
@@ -20,7 +18,7 @@
 ```
 
 AccessKey 和 IAM Role 是不同资源，不能用 `create_before_destroy` 表示这个迁移。真正的业务
-场景还需要在两次 Apply 之间把调用方切换为 `AssumeRole`；本模板只负责云资源部分。
+场景中的调用方必须在执行前完成切换；本模板第一次 Apply 会立即禁用全部旧 AccessKey。
 
 ## 安全要求
 
@@ -28,6 +26,7 @@ AccessKey 和 IAM Role 是不同资源，不能用 `create_before_destroy` 表�
 - 禁止填写 OpenTofu/Infra Manager 当前使用凭证所属的 IAM 用户；
 - 测试用户不能加入用户组，并且至少直接关联一个策略；
 - 模板只复制测试用户的直接授权策略，不复制通过用户组继承的权限；
+- 第一次 Apply 会立即禁用该用户的全部 AccessKey；
 - 第二次 Apply 会永久删除该用户的全部 AccessKey，Secret 无法恢复。
 
 IAM 用户、AccessKey 和 Role 不收费。
@@ -65,7 +64,7 @@ tofu state list
 export TF_VAR_role_name="qa-ak-migration-role"
 ```
 
-## 第一次 Apply：Import + Create
+## 第一次 Apply：Import + Disable + Create
 
 ```bash
 tofu plan -out=plans/prepare.tfplan
@@ -75,11 +74,11 @@ tofu show -no-color plans/prepare.tfplan
 必须确认计划包含：
 
 ```text
-volcenginecc_iam_accesskey.legacy["<AccessKey ID>"]：每把 Key 分别 Import，保持原状态
+volcenginecc_iam_accesskey.legacy["<AccessKey ID>"]：每把 Key 分别 Import，并更新为 inactive
 volcenginecc_iam_role.replacement：Create
 terraform_data.migration_context：Create，记录本次迁移对象
 
-Plan: N to import, 2 to add, 0 to change, 0 to destroy.
+Plan: N to import, 2 to add, 最多 N to change, 0 to destroy.
 ```
 
 执行：
@@ -89,7 +88,7 @@ tofu apply plans/prepare.tfplan
 tofu output migration_summary
 ```
 
-此时用户的全部旧 AccessKey 仍然存在，新 Role 已经创建。
+此时用户的全部旧 AccessKey 仍然存在但已禁用，新 Role 已经创建。
 
 ## 第二次 Apply：Delete
 

@@ -23,7 +23,7 @@ variable "role_name" {
 }
 
 variable "delete_legacy_access_keys" {
-  description = "false：Import 并保留用户的全部 AccessKey；true：从配置中移除并删除这些 AccessKey。"
+  description = "false：Import 并禁用用户的全部 AccessKey；true：从配置中移除并删除这些 AccessKey。"
   type        = bool
   default     = false
 }
