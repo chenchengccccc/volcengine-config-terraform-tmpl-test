@@ -8,16 +8,6 @@ variable "user_name" {
   }
 }
 
-variable "access_key_id" {
-  description = "第二次 Apply 将删除的测试 AccessKey ID。"
-  type        = string
-
-  validation {
-    condition     = length(trimspace(var.access_key_id)) > 0
-    error_message = "access_key_id 不能为空。"
-  }
-}
-
 variable "role_name" {
   description = "新 IAM Role 名称；不指定时根据 user_name 生成稳定名称。"
   type        = string
@@ -32,8 +22,8 @@ variable "role_name" {
   }
 }
 
-variable "delete_legacy_access_key" {
-  description = "false：Import 并保留旧 AccessKey；true：从 State 对应配置中移除并删除旧 AccessKey。"
+variable "delete_legacy_access_keys" {
+  description = "false：Import 并保留用户的全部 AccessKey；true：从配置中移除并删除这些 AccessKey。"
   type        = bool
   default     = false
 }
