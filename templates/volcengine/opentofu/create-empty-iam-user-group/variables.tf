@@ -1,3 +1,13 @@
+variable "region" {
+  description = "CloudControl 请求地域。"
+  type        = string
+}
+
+variable "cloud_control_endpoint" {
+  description = "CloudControl API 接入地址。"
+  type        = string
+}
+
 variable "user_group_name" {
   description = "需要创建的空 IAM 用户组名称。"
   type        = string
