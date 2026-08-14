@@ -9,7 +9,7 @@
    │
    ├── IMPORT：纳入当前独立 State
    ├── CREATE：在同一 VPC 创建新安全组
-   └── MODIFY：当前安全组集合 ∪ 新安全组
+   └── UPDATE：当前安全组集合 ∪ 新安全组
 ```
 
 与 Terraform 1.5.7 版本相比，不需要单独运行 `terraform import`。`imports.tf` 将 Import
