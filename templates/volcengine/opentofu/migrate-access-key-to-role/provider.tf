@@ -1,5 +1,9 @@
-# IAM 是全局服务，模板不接收地域参数；cn-beijing 只用于选择 Provider 请求端点。
+# IAM 是全局服务，region 仍用于 CloudControl 请求签名。
 # AK、SK 和 SecurityToken 仍通过 VOLCENGINE_* 环境变量传入。
 provider "volcenginecc" {
-  region = "cn-beijing"
+  region = var.region
+
+  endpoints = {
+    cloudcontrolapi = var.cloud_control_endpoint
+  }
 }

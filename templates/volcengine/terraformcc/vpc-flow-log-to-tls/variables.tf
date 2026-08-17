@@ -2,6 +2,13 @@
 variable "region" {
   description = "火山引擎地域。"
   type        = string
+  default     = "cn-guilin-boe"
+}
+
+variable "cloud_control_endpoint" {
+  description = "CloudControl API 接入地址。"
+  type        = string
+  default     = "cloudcontrol.cn-guilin-boe.volcengineapi-test.com"
 }
 
 # 这是一个已经存在的 VPC。

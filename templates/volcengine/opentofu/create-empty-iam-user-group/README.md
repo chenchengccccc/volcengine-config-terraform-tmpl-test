@@ -16,15 +16,14 @@ Infra Manager + OpenTofu
 
 ## 输入
 
-接收 Provider 路由参数和用户组名称：
+Provider 路由参数已有 BOE 默认值，只需设置用户组名称：
 
 ```bash
-export TF_VAR_region="cn-guilin-boe"
-export TF_VAR_cloud_control_endpoint="cloudcontrol.cn-guilin-boe.volcengineapi-test.com"
 export TF_VAR_user_group_name="config-deploy-e2e-example"
 ```
 
-`region` 和 `cloud_control_endpoint` 由执行环境注入，避免模板固定到某个站点。`user_group_name` 必须以 `config-deploy-e2e-` 开头。
+`region` 和 `cloud_control_endpoint` 默认连接 BOE，也允许执行环境显式覆盖。
+`user_group_name` 必须以 `config-deploy-e2e-` 开头。
 
 预期 Plan：
 

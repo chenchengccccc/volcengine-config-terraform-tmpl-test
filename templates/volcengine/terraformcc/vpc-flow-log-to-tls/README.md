@@ -35,14 +35,13 @@ Plan: 3 to add, 0 to change, 0 to destroy.
 
 ## 初始化和 Plan
 
-Terraform 会自动把 `TF_VAR_<变量名>` 映射到同名输入变量。进入模板后先设置本次
-实验的两个必填参数：
+Terraform 会自动把 `TF_VAR_<变量名>` 映射到同名输入变量。BOE 地域和 endpoint 已有
+默认值，进入模板后只需设置目标 VPC：
 
 ```bash
 cd templates/volcengine/terraformcc/vpc-flow-log-to-tls
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_vpc_id="vpc-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
 terraform init

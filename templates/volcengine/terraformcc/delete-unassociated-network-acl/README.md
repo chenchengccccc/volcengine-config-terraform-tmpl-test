@@ -48,7 +48,6 @@ VPC
 cd templates/volcengine/terraformcc/delete-unassociated-network-acl
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_network_acl_id="nacl-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
 terraform init

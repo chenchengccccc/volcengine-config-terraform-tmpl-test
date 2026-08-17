@@ -1,11 +1,13 @@
 variable "region" {
   description = "CloudControl 请求地域。"
   type        = string
+  default     = "cn-guilin-boe"
 }
 
 variable "cloud_control_endpoint" {
   description = "CloudControl API 接入地址。"
   type        = string
+  default     = "cloudcontrol.cn-guilin-boe.volcengineapi-test.com"
 }
 
 variable "user_group_name" {

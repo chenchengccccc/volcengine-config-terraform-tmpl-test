@@ -11,4 +11,7 @@
 
     source ../../../../.credentials.env
 
+使用 `volcenginecc` Provider 的模板默认连接 `cn-guilin-boe` 和 BOE CloudControl endpoint；
+如需验证其他环境，可通过 `TF_VAR_region` 和 `TF_VAR_cloud_control_endpoint` 显式覆盖。
+
 具体参数、Import、Plan 和清理步骤以场景 README 为准。

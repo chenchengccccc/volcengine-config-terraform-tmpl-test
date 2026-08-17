@@ -25,7 +25,6 @@ OpenTofu 的 Import Block 只在正常 Plan 中处理，Destroy Plan 不会导�
 cd templates/volcengine/opentofu/delete-unassociated-network-acl
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_network_acl_id="nacl-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
 tofu init

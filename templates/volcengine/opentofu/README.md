@@ -62,4 +62,6 @@ tofu init
 tofu validate
 ```
 
-业务参数仍然使用 `TF_VAR_*` 环境变量。具体 Plan 预期和清理步骤见各案例 README。
+业务参数仍然使用 `TF_VAR_*` 环境变量。所有使用 `volcenginecc` Provider 的模板默认连接
+`cn-guilin-boe` 和 BOE CloudControl endpoint；如需验证其他环境，可通过
+`TF_VAR_region` 和 `TF_VAR_cloud_control_endpoint` 显式覆盖。具体 Plan 预期和清理步骤见各案例 README。

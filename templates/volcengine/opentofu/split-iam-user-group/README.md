@@ -41,8 +41,8 @@ tofu validate
 tofu state list
 ```
 
-IAM 是全局服务，模板不接收地域参数；`provider.tf` 中的 `cn-beijing` 只用于选择
-Provider 请求端点。
+IAM 是全局服务。模板默认使用 BOE 的 `cn-guilin-boe` 和 CloudControl 测试地址，调用方
+只需传入 `old_group_name`。
 
 不要运行 `tofu import`。
 

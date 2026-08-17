@@ -44,12 +44,11 @@ Plan: 1 to add, 1 to change, 0 to destroy.
 cd templates/volcengine/terraformcc/eni-add-security-group
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_network_interface_id="eni-xxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
 Terraform 自动把 `TF_VAR_<变量名>` 映射到同名输入变量。每次新开终端需要重新加载
-凭证并设置这两个模板参数。
+凭证并设置业务参数；BOE 地域和 endpoint 已有默认值。
 
 ## 初始化
 

@@ -50,9 +50,8 @@ CloudFormation 对 AWS::* 资源类型本身不额外收费，但模板创建的
 
     source ../../../../.credentials.env
 
-业务参数继续使用 TF_VAR_* 环境变量。例如：
+模板默认连接 BOE 的 `cn-guilin-boe` 和 CloudControl 测试地址；只需设置业务参数。例如：
 
-    export TF_VAR_region="cn-beijing"
     export TF_VAR_network_interface_id="eni-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
     terraform init
@@ -67,7 +66,6 @@ OpenTofu 版本用于对比配置式 Import。进入对应场景：
     cd templates/volcengine/opentofu/eni-add-security-group
     source ../../../../.credentials.env
 
-    export TF_VAR_region="cn-beijing"
     export TF_VAR_network_interface_id="eni-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
     tofu init

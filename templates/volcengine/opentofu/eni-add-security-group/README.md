@@ -27,7 +27,6 @@ Plan: 1 to import, 1 to add, 1 to change, 0 to destroy.
 cd templates/volcengine/opentofu/eni-add-security-group
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_network_interface_id="eni-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
 tofu init

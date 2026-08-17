@@ -60,8 +60,8 @@ export TF_VAR_old_group_name="qa-legacy-developers"
 ```
 
 Terraform 会把 `TF_VAR_old_group_name` 作为 `old_group_name` 变量，同时 Import 命令也
-直接复用这个值，不需要在两个文件或命令中重复填写。IAM 是全局服务，模板不接收地域
-参数；`provider.tf` 中的 `cn-beijing` 只用于选择 Provider 请求端点。
+直接复用这个值，不需要在两个文件或命令中重复填写。IAM 是全局服务，模板默认使用
+BOE 的 `cn-guilin-boe` 和 CloudControl 测试地址。
 
 ## 初始化和 Plan
 

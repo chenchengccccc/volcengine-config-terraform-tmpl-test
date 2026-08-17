@@ -1,7 +1,14 @@
-# 当前模板操作的地域，通过 TF_VAR_region 环境变量注入。
+# 当前模板默认使用 BOE 地域，也允许执行环境覆盖。
 variable "region" {
   description = "火山引擎地域。"
   type        = string
+  default     = "cn-guilin-boe"
+}
+
+variable "cloud_control_endpoint" {
+  description = "CloudControl API 接入地址。"
+  type        = string
+  default     = "cloudcontrol.cn-guilin-boe.volcengineapi-test.com"
 }
 
 # 这是一个已经存在的 ENI，不是本模板准备创建的新 ENI。

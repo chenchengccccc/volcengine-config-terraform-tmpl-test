@@ -1,4 +1,16 @@
-# 唯一业务输入：需要按策略拆分的现有 IAM 用户组名。
+variable "region" {
+  description = "CloudControl 请求地域。"
+  type        = string
+  default     = "cn-guilin-boe"
+}
+
+variable "cloud_control_endpoint" {
+  description = "CloudControl API 接入地址。"
+  type        = string
+  default     = "cloudcontrol.cn-guilin-boe.volcengineapi-test.com"
+}
+
+# 唯一必填业务输入：需要按策略拆分的现有 IAM 用户组名。
 variable "old_group_name" {
   description = "需要按已关联策略拆分的现有 IAM 用户组名。"
   type        = string

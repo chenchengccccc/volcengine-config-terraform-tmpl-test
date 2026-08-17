@@ -24,7 +24,6 @@ Plan: 3 to add, 0 to change, 0 to destroy.
 cd templates/volcengine/opentofu/vpc-flow-log-to-tls
 source ../../../../.credentials.env
 
-export TF_VAR_region="cn-beijing"
 export TF_VAR_vpc_id="vpc-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
 tofu init
