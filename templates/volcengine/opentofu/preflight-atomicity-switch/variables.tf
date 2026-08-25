@@ -1,0 +1,3 @@
+variable "marker" {
+  type = string
+}
