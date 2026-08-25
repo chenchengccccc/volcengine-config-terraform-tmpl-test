@@ -1,14 +1,7 @@
 terraform {
-  required_version = "= 1.11.8"
-
-  required_providers {
-    volcenginecc = {
-      source  = "volcengine/volcenginecc"
-      version = "= 0.0.57"
-    }
-  }
+  required_version = ">= 1.0"
 }
 
-data "volcenginecc_iam_group" "target" {
-  id = var.marker
+resource "terraform_data" "marker" {
+  input = var.marker
 }
