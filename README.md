@@ -17,7 +17,8 @@
         │       ├── eni-add-security-group/
         │       ├── vpc-flow-log-to-tls/
         │       ├── delete-unassociated-network-acl/
-        │       └── split-iam-user-group/
+        │       ├── split-iam-user-group/
+        │       └── stop-ecs-instance/
         └── aws/
             └── cloudformation/
                 ├── vpc-flow-log-to-cloudwatch/
@@ -36,6 +37,7 @@ AWS 示例各自使用独立 CloudFormation Stack。
 | 删除已有的未关联 Network ACL | 已提供 | 已提供，先 Import 已有 ACL | Network ACL 本身不额外收费。 |
 | 拆分已有 IAM 用户组 | 已提供 | 已提供静态示例，先 Import 已有组 | IAM 不额外收费。 |
 | 为已有 VPC 创建流日志 | 已提供 | 已提供，纯 CreateStack，不 Import VPC | CloudWatch Logs 写入和存储收费，不属于免费实验。 |
+| 停止已有 ECS 实例 | 仅 OpenTofu 提供 | 未提供 | 默认遵从云侧停机策略；若显式使用 `KeepCharging` 会继续产生原有费用，`StopCharging` 会回收计算资源，但云盘、镜像和公网 IP 等资源仍可能继续计费。 |
 
 CloudFormation 对 AWS::* 资源类型本身不额外收费，但模板创建的 AWS 资源仍按各服务
 价格计费。
